@@ -1,28 +1,8 @@
-/*
- * 立创开发板软硬件资料与相关扩展板软硬件资料官网全部开源
- * 开发板官网：www.lckfb.com
- * 文档网站：wiki.lckfb.com
- * 技术支持常驻论坛，任何技术问题欢迎随时交流学习
- * 嘉立创社区问答：https://www.jlc-bbs.com/lckfb
- * 关注bilibili账号：【立创开发板】，掌握我们的最新动态！
- * 不靠卖板赚钱，以培养中国工程师为己任
- */
-
-#ifndef BSP_CODE_BSP_HX711_H_
-#define BSP_CODE_BSP_HX711_H_
+#ifndef WEIGHT_HX711_H_
+#define WEIGHT_HX711_H_
 
 #include "hal_data.h"
 #include <stdio.h>
-
-#ifndef u8
-#define u8 uint8_t
-#endif
-#ifndef u16
-#define u16 uint16_t
-#endif
-#ifndef u32
-#define u32 uint32_t
-#endif
 
 #ifndef delay_ms
 #define delay_ms(x)   R_BSP_SoftwareDelay(x, BSP_DELAY_UNITS_MILLISECONDS)
@@ -37,9 +17,12 @@
 #define delay_1us(x)  R_BSP_SoftwareDelay(x, BSP_DELAY_UNITS_MICROSECONDS)
 #endif
 
-
 #define Module_SCL_PIN   HX_SCL // SCL
 #define Module_SDA_PIN   HX_SDA // SDA
+
+#define FILTER_BUFFER_SIZE 10
+#define KEY_PRESSED 0
+#define KEY_RELEASED 1
 
 //SDA输入模式
 #define SDA_IN() { \
@@ -77,9 +60,38 @@ static inline bsp_io_level_t GET_SDA(void) {
     return p_pin_value;
 }
 
+typedef struct 
+{
+    uint32_t buffer[FILTER_BUFFER_SIZE];
+    uint32_t index;
+    uint32_t sum;
+    uint8_t is_full;
+}Moving_Average_Filter_St;
+
+extern Moving_Average_Filter_St HX711_Filter;
+
+typedef struct
+{
+    bsp_io_level_t current_state;
+    bsp_io_level_t last_state;
+    uint8_t press_time;
+    uint8_t release_time;
+    uint8_t press_detected;
+    uint8_t is_pressed;
+}Key_State;
+
+typedef struct 
+{
+    Key_State is_Tare;
+    Key_State is_Calibration;
+}SCALE_Key;
+
+extern SCALE_Key Scale_Key;
+
 void HX711_Init(void);
 void HX711_Get_InitValue(void);
 float HX711_Get_Weight(void);
+void Get_Key(void);
 
 #endif /* BSP_CODE_BSP_HX711_H_ */
 

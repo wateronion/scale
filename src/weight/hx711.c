@@ -1,33 +1,43 @@
-/*
- * 立创开发板软硬件资料与相关扩展板软硬件资料官网全部开源
- * 开发板官网：www.lckfb.com
- * 文档网站：wiki.lckfb.com
- * 技术支持常驻论坛，任何技术问题欢迎随时交流学习
- * 嘉立创社区问答：https://www.jlc-bbs.com/lckfb
- * 关注bilibili账号：【立创开发板】，掌握我们的最新动态！
- * 不靠卖板赚钱，以培养中国工程师为己任
- */
-
 #include "hx711.h"
 #include "stdio.h"
 
 uint32_t HX711_Weight_Init;
+Moving_Average_Filter_St HX711_Filter;
+SCALE_Key Scale_Key;
 
-//校准参数
-//因为不同的传感器特性曲线不是很一致，因此，每一个传感器需要矫正这里这个参数才能使测量值很准确。
-//当发现测试出来的重量偏大时，增加该数值。
-//如果测试出来的重量偏小时，减小改数值。
-//该值可以为小数
-#define GAP_VALUE   207.00
+#define GAP_VALUE   111.08
 
-/******************************************************************
- * 函 数 名 称：HX711_Init
- * 函 数 说 明：HX711初始化
- * 函 数 形 参：无
- * 函 数 返 回：无
- * 作       者：LCKFB
- * 备       注：无
-******************************************************************/
+static uint32_t Moving_Average_Filter(Moving_Average_Filter_St *filter, uint32_t new_adc_value)
+{
+    if (new_adc_value == 0)
+        return 0;
+    // 1. 如果缓冲区还未填满，执行填充操作
+    if (!filter->is_full) {
+        filter->sum += new_adc_value;
+        filter->buffer[filter->index] = new_adc_value;
+        filter->index++;
+
+        // 检查缓冲区是否刚刚被填满
+        if (filter->index == FILTER_BUFFER_SIZE) {
+            filter->is_full = 1;
+            filter->index = 0;
+        }
+
+        // 在填满前，返回当前已采集数据的平均值
+        return filter->sum / (filter->index);
+    }
+
+    // 2. 缓冲区满后
+    else {
+        filter->sum -= filter->buffer[filter->index];
+        filter->sum += new_adc_value;
+        filter->buffer[filter->index] = new_adc_value;
+        filter->index = (filter->index + 1) % FILTER_BUFFER_SIZE;
+
+        return filter->sum / FILTER_BUFFER_SIZE;
+    }
+}
+
 void HX711_Init(void)
 {
     SDA_OUT(); // 设置SDA引脚为输出模式
@@ -38,14 +48,11 @@ void HX711_Init(void)
     delay_ms(100); // 等待传感器稳定
 }
 
-/******************************************************************
- * 函 数 名 称：HX711_Read
- * 函 数 说 明：读取HX711
- * 函 数 形 参：无
- * 函 数 返 回：读取到的值
- * 作       者：LCKFB
- * 备       注：无
-******************************************************************/
+/**
+ * @brief 获取ADC值
+ * 
+ * @return uint32_t 
+ */
 static uint32_t HX711_Read(void) //增益128
 {
     unsigned long count;
@@ -81,44 +88,77 @@ static uint32_t HX711_Read(void) //增益128
     return(count);
 }
 
-/******************************************************************
- * 函 数 名 称：HX711_Get_InitValue
- * 函 数 说 明：获取初始值
- * 函 数 形 参：无
- * 函 数 返 回：无
- * 作       者：LCKFB
- * 备       注：后续的重量都是以该初始重量为0值，因此在初始化时，秤上不要放任何东西
-******************************************************************/
 void HX711_Get_InitValue(void)
 {
     HX711_Weight_Init = HX711_Read();
 }
-/******************************************************************
- * 函 数 名 称：HX711_Get_Weight
- * 函 数 说 明：称重
- * 函 数 形 参：无
- * 函 数 返 回：称重值，单位g
- * 作       者：LCKFB
- * 备       注：无
-******************************************************************/
+
+/**
+ * @brief 获取重量
+ * 
+ * @return float 
+ */
 float HX711_Get_Weight(void)
 {
     uint32_t HX711_Read_Buffer = 0;
     float Return_Buffer = 0;
 
-    HX711_Read_Buffer = HX711_Read();
+    // HX711_Read_Buffer = HX711_Read();
+    HX711_Read_Buffer = Moving_Average_Filter(&HX711_Filter,HX711_Read());
     // printf("""HX711 Read Buffer = %d\r\n", HX711_Read_Buffer);
 
     if(HX711_Read_Buffer > HX711_Weight_Init)
     {
         HX711_Read_Buffer -= HX711_Weight_Init; //获取实物的采样数值。
 
-        Return_Buffer = (float)HX711_Read_Buffer / (float)GAP_VALUE;//计算实物的实际重量
-        //因为不同的传感器特性曲线不一样，因此，每一个传感器需要矫正这里的 GAP_VALUE 这个除数。
-        //当发现测试出来的重量偏大时，增加该数值。
-        //如果测试出来的重量偏小时，减小改数值。
+        Return_Buffer = (float)HX711_Read_Buffer / (float)GAP_VALUE;
+
     }
 
     return Return_Buffer;
 }
+
+void Get_Key(void)
+{
+    static uint8_t current_count = 0;
+    
+    Scale_Key.is_Tare.last_state = Scale_Key.is_Tare.current_state;
+    Scale_Key.is_Calibration.last_state = Scale_Key.is_Calibration.current_state;
+    current_count++;
+    R_IOPORT_PinRead(&g_ioport_ctrl,KEY1, &Scale_Key.is_Tare.current_state);
+    R_IOPORT_PinRead(&g_ioport_ctrl,KEY2, &Scale_Key.is_Calibration.current_state);
+    
+    if(Scale_Key.is_Tare.current_state == KEY_PRESSED && Scale_Key.is_Tare.last_state == KEY_RELEASED)
+    {
+        Scale_Key.is_Tare.press_time = current_count;
+        Scale_Key.is_Tare.press_detected = 1; //检测到按键按下
+    }
+    else if(Scale_Key.is_Tare.current_state == KEY_RELEASED && Scale_Key.is_Tare.last_state == KEY_PRESSED)
+    {
+        Scale_Key.is_Tare.release_time = current_count;
+        if(Scale_Key.is_Tare.press_detected)
+        {
+            // key.release_detected = 1; //检测到按键释放
+            Scale_Key.is_Tare.press_detected = 0;
+            Scale_Key.is_Tare.is_pressed = 1;
+        }
+    }
+
+    if(Scale_Key.is_Calibration.current_state == KEY_PRESSED && Scale_Key.is_Calibration.last_state == KEY_RELEASED)
+    {
+        Scale_Key.is_Calibration.press_time = current_count;
+        Scale_Key.is_Calibration.press_detected = 1; //检测到按键按下
+    }
+    else if(Scale_Key.is_Calibration.current_state == KEY_RELEASED && Scale_Key.is_Calibration.last_state == KEY_PRESSED)
+    {
+        Scale_Key.is_Calibration.release_time = current_count;
+        if(Scale_Key.is_Calibration.press_detected)
+        {
+            // key.release_detected = 1; //检测到按键释放
+            Scale_Key.is_Calibration.press_detected = 0;
+            Scale_Key.is_Calibration.is_pressed = 1;
+        }
+    }
+}
+
 

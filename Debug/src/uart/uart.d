@@ -61,7 +61,8 @@ src/uart/uart.o: ../src/uart/uart.c ../src/uart/uart.h \
  E:/Renesas/workplace/scale/ra/fsp/inc/api/r_transfer_api.h \
  E:/Renesas/workplace/scale/ra_cfg/fsp_cfg/r_sci_uart_cfg.h \
  E:/Renesas/workplace/scale/ra/fsp/inc/instances/r_gpt.h \
- E:/Renesas/workplace/scale/ra/fsp/inc/api/r_timer_api.h
+ E:/Renesas/workplace/scale/ra/fsp/inc/api/r_timer_api.h \
+ E:/Renesas/workplace/scale/src/weight/hx711.h
 ../src/uart/uart.h:
 E:/Renesas/workplace/scale/ra_gen/hal_data.h:
 E:/Renesas/workplace/scale/ra/fsp/inc/api/bsp_api.h:
@@ -126,3 +127,4 @@ E:/Renesas/workplace/scale/ra/fsp/inc/api/r_transfer_api.h:
 E:/Renesas/workplace/scale/ra_cfg/fsp_cfg/r_sci_uart_cfg.h:
 E:/Renesas/workplace/scale/ra/fsp/inc/instances/r_gpt.h:
 E:/Renesas/workplace/scale/ra/fsp/inc/api/r_timer_api.h:
+E:/Renesas/workplace/scale/src/weight/hx711.h:

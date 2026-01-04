@@ -21,7 +21,7 @@
 void UART0_Init(void);
 void uart0_callback(uart_callback_args_t *p_args);
 
-void uart1_init(void);
+void UART1_Init(void);
 void uart1_callback(uart_callback_args_t *p_args);
 
 #endif /* UART_UART_H_ */

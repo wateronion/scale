@@ -61,13 +61,15 @@
       <configSetting altId="p207.output.high" configurationId="p207"/>
       <configSetting altId="p212.output.high" configurationId="p212"/>
       <configSetting altId="p213.output.high" configurationId="p213"/>
+      <configSetting altId="p301.input" configurationId="p301"/>
+      <configSetting altId="p302.input" configurationId="p302"/>
       <configSetting altId="p402.output.high" configurationId="p402"/>
       <configSetting altId="p407.output.high" configurationId="p407"/>
       <configSetting altId="p408.output.high" configurationId="p408"/>
       <configSetting altId="sci0.rxd0.p100" configurationId="sci0.rxd0" isUsedByDriver="true" peripheral="SCI0"/>
       <configSetting altId="sci0.txd0.p101" configurationId="sci0.txd0" isUsedByDriver="true" peripheral="SCI0"/>
-      <configSetting altId="sci9.rxd9.p110" configurationId="sci9.rxd9" peripheral="SCI9"/>
-      <configSetting altId="sci9.txd9.p109" configurationId="sci9.txd9" peripheral="SCI9"/>
+      <configSetting altId="sci9.rxd9.p110" configurationId="sci9.rxd9" isUsedByDriver="true" peripheral="SCI9"/>
+      <configSetting altId="sci9.txd9.p109" configurationId="sci9.txd9" isUsedByDriver="true" peripheral="SCI9"/>
     </pincfg>
   </raPinConfiguration>
 </raConfiguration>

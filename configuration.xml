@@ -303,7 +303,7 @@
     </module>
     <module id="module.driver.uart_on_sci_uart.145784136">
       <property id="module.driver.uart.name" value="g_uart1"/>
-      <property id="module.driver.uart.channel" value="0"/>
+      <property id="module.driver.uart.channel" value="9"/>
       <property id="module.driver.uart.data_bits" value="module.driver.uart.data_bits.data_bits_8"/>
       <property id="module.driver.uart.parity" value="module.driver.uart.parity.parity_off"/>
       <property id="module.driver.uart.stop_bits" value="module.driver.uart.stop_bits.stop_bits_1"/>
@@ -372,6 +372,8 @@
     <symbolicName propertyId="p207.symbolic_name" value="TM1650_SDA"/>
     <symbolicName propertyId="p212.symbolic_name" value="HX_SCL"/>
     <symbolicName propertyId="p213.symbolic_name" value="HX_SDA"/>
+    <symbolicName propertyId="p301.symbolic_name" value="KEY1"/>
+    <symbolicName propertyId="p302.symbolic_name" value="KEY2"/>
     <symbolicName propertyId="p402.symbolic_name" value="RUN_LED"/>
     <symbolicName propertyId="p407.symbolic_name" value="OLED_SCL"/>
     <symbolicName propertyId="p408.symbolic_name" value="OLED_SDA"/>
@@ -405,6 +407,12 @@
       <configSetting altId="p213.gpio_mode.gpio_mode_out.high" configurationId="p213.gpio_mode"/>
       <configSetting altId="p300.jtag_fslash_swd.swclk" configurationId="p300"/>
       <configSetting altId="p300.gpio_mode.gpio_mode_peripheral" configurationId="p300.gpio_mode"/>
+      <configSetting altId="p301.input" configurationId="p301"/>
+      <configSetting altId="p301.gpio_mode.gpio_mode_in" configurationId="p301.gpio_mode"/>
+      <configSetting altId="p301.gpio_pupd.gpio_pupd_ip_up" configurationId="p301.gpio_pupd"/>
+      <configSetting altId="p302.input" configurationId="p302"/>
+      <configSetting altId="p302.gpio_mode.gpio_mode_in" configurationId="p302.gpio_mode"/>
+      <configSetting altId="p302.gpio_pupd.gpio_pupd_ip_up" configurationId="p302.gpio_pupd"/>
       <configSetting altId="p402.output.high" configurationId="p402"/>
       <configSetting altId="p402.gpio_speed.gpio_speed_h" configurationId="p402.gpio_drivecapacity"/>
       <configSetting altId="p402.gpio_mode.gpio_mode_out.high" configurationId="p402.gpio_mode"/>

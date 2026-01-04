@@ -16,14 +16,13 @@
 
 void app_main(void)
 {
-//    float get_weight = 0;
     UART0_Init();
+    UART1_Init();
     GPT_Timer_Init();
     
     printf("Hello World!\r\n");
 
     FLASH_Init();
-    // FLASH_Test();
 
     TM1650_init();
     HX711_Init();
@@ -33,14 +32,28 @@ void app_main(void)
     OLED_Init();
     OLED_ColorTurn(0);//0正常显示，1 反色显示
     OLED_DisplayTurn(0);//0正常显示 1 屏幕翻转显示
-    TM1650_showNum(1234);
+    OLED_ShowString(0,24,"WEIGHT:",16,1);
+    OLED_ShowString(96,24,"g",16,1);
+    OLED_Refresh();
     while(1)
     {
-        OLED_ShowPicture(0,0,128,64,BMP2,1);
-        OLED_Refresh();
-        delay_ms(200);
+        // OLED_ShowPicture(0,0,128,64,BMP2,1);
 
-        printf("\r\nHX711 Get Weight = [%.2fg]\r\n", HX711_Get_Weight());
-        delay_1ms(300);
+        Get_Key();
+
+        float weight = HX711_Get_Weight();
+        printf("\r\nHX711 Get Weight = [%.2fg]\r\n", weight);
+//        R_SCI_UART_Write(&g_uart1_cfg, (uint8_t *)&weight, 4);
+        TM1650_showNum((int)weight);
+        OLED_ShowNum(56,24,(uint32_t)weight,5,16,1);
+        OLED_Refresh();
+        
+         if(Scale_Key.is_Tare.is_pressed)
+         {
+             HX711_Get_InitValue();
+             Scale_Key.is_Tare.is_pressed = 0;
+         }
+
+        delay_1ms(20);
     }
 }

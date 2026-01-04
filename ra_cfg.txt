@@ -129,8 +129,8 @@ FSP Configuration
       P212 8 GPIO HX_SCL H - "Output mode (Initial High)" - - "AGT1: AGTEE1; CGC: EXTAL; GPT0: GTIOC0B; GPT_POEGD: GTETRGD; IRQ: IRQ3; SCI0: RXD0" - IO - - 
       P213 7 GPIO HX_SDA H - "Output mode (Initial High)" - - "CGC: XTAL; GPT0: GTIOC0A; GPT_POEGC: GTETRGC; IRQ: IRQ2; SCI0: TXD0; SSIE: AUDIO_CLK" - IO - - 
       P300 24 JTAG/SWD_SWCLK - L - "Peripheral mode" - - "GPT0: GTIOC0A; GPT_OPS: GTOUUP; JTAG/SWD: SWCLK; SPI0: SSLA1" - IO - - 
-      P301 23 - - - - Disabled - - "AGT0: AGTIO0; GPT4: GTIOC4B; GPT_OPS: GTOULO; IRQ: IRQ6; SCI9: CTS_RTS9; SPI0: SSLA0; SSIE0: SSIRXD0" - None - - 
-      P302 22 - - - - Disabled - - "GPT4: GTIOC4A; GPT_OPS: GTOUUP; IRQ: IRQ5; RTC: RTCOUT; SCI0: CTS0; SCI9: SCK9; SPI0: RSPCK0; SSIE0: SSITXD0" - None - - 
+      P301 23 GPIO KEY1 - None "Input mode" - - "AGT0: AGTIO0; GPT4: GTIOC4B; GPT_OPS: GTOULO; IRQ: IRQ6; SCI9: CTS_RTS9; SPI0: SSLA0; SSIE0: SSIRXD0" - IO - - 
+      P302 22 GPIO KEY2 - None "Input mode" - - "GPT4: GTIOC4A; GPT_OPS: GTOUUP; IRQ: IRQ5; RTC: RTCOUT; SCI0: CTS0; SCI9: SCK9; SPI0: RSPCK0; SSIE0: SSITXD0" - IO - - 
       P402 1 GPIO RUN_LED H - "Output mode (Initial High)" - - "AGT0: AGTIO0; AGT1: AGTIO1; CAC: CACREF; CANFD0: CRX0; GPT: GTADSM1; IRQ: IRQ4-DS; RTC: RTCIC0; SSIE: AUDIO_CLK" - IO - - 
       P403 2 - - - - Disabled - - "AGT0: AGTIO0; AGT1: AGTIO1; GPT3: GTIOC3A; IRQ: IRQ14-DS; RTC: RTCIC1" - None - - 
       P407 12 GPIO OLED_SCL H - "Output mode (Initial High)" - - "ADC0(Digital): ADTRG0; AGT0: AGTIO0; GPT: GTADSM0; GPT_OPS: GTIV; I3C/IIC: SDA0; RTC: RTCOUT; SSIE0: SSIBCK0; USB FS: USB_VBUS" - IO - - 
@@ -276,7 +276,7 @@ FSP Configuration
       
     Instance "g_uart1 UART (r_sci_uart)"
       General: Name: g_uart1
-      General: Channel: 0
+      General: Channel: 9
       General: Data Bits: 8bits
       General: Parity: None
       General: Stop Bits: 1bit

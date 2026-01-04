@@ -5,6 +5,7 @@
  *      Author: admin
  */
 #include "uart.h"
+#include "weight/hx711.h"
 
 // uart0接收完成标志位
 volatile bool Uart0_Receive_Flag = false;
@@ -31,7 +32,7 @@ void UART0_Init(void)
     }
 }
 
-void uart1_init(void)
+void UART1_Init(void)
 {
     fsp_err_t err = FSP_SUCCESS;
 
@@ -79,7 +80,15 @@ void uart1_callback(uart_callback_args_t *p_args)
     {
         case UART_EVENT_RX_CHAR: //收到数据
         {
-            // R_SCI_UART_Write(&g_uart1_ctrl, (uint8_t*) &(p_args->data), bytes);
+            // if (strcmp("CONNECTED", &p_args->data) == 0)
+            // {
+                
+            // }
+            // else if( strcmp("TARE", &p_args->data) == 0)
+            // {
+            //     HX711_Get_InitValue();
+            // }
+            
             break;
         }
         case UART_EVENT_RX_COMPLETE:  //接收完整的事件
