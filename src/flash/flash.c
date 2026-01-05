@@ -65,6 +65,24 @@ void FLASH_Read(void *data_addr, uint32_t flash_addr, uint32_t size)
     memcpy(data_addr, (uint8_t *)flash_addr, size);
 }
 
+void FLASH_Write_Float(float *data_addr, uint32_t flash_addr)
+{
+    FLASH_Erase(flash_addr, 1);
+
+    uint8_t temp_data[4] = {0};
+    memcpy(temp_data, data_addr, 4);
+
+    FLASH_Write((uint32_t)temp_data, flash_addr, 4);
+}
+
+void FLASH_Read_Float(float *data_addr, uint32_t flash_addr)
+{
+    uint8_t temp_data[4] = {0};
+    FLASH_Read(temp_data, flash_addr, 4);
+
+    memcpy(data_addr, temp_data, 4);
+}
+
 void FLASH_Test(void)
 {
     // 要写入的数据

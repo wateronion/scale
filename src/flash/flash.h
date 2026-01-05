@@ -31,4 +31,7 @@ void FLASH_Read(void *data_addr, uint32_t flash_addr, uint32_t size);
 void FLASH_Test(void);
 void FLASH_HP_DataFlash_Operation(void);
 
+void FLASH_Write_Float(float *data_addr, uint32_t flash_addr);
+void FLASH_Read_Float(float *data_addr, uint32_t flash_addr);
+
 #endif
