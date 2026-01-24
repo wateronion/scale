@@ -101,7 +101,7 @@ all: scale.elf secondary-outputs
 
 # Tool invocations
 scale.elf: $(OBJS) $(USER_OBJS) $(LINKER_SCRIPT)
-	$(file > scale.elf.in,-mcpu=cortex-m33 -mthumb -mfloat-abi=hard -mfpu=fpv5-sp-d16 -O2 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -fno-strict-aliasing -Wunused -Wuninitialized -Wall -Wextra -Wmissing-declarations -Wconversion -Wpointer-arith -Wshadow -Wlogical-op -Waggregate-return -Wfloat-equal -g -T "fsp.ld" -Xlinker --gc-sections -L "E:\\Renesas\\workplace\\scale/script" -Wl,-Map,"scale.map" --specs=nano.specs -u _printf_float -o "scale.elf" $(OBJS) $(USER_OBJS) $(LIBS))
+	$(file > scale.elf.in,-mcpu=cortex-m33 -mthumb -mfloat-abi=hard -mfpu=fpv5-sp-d16 -O2 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -fno-strict-aliasing -Wunused -Wuninitialized -Wall -Wextra -Wmissing-declarations -Wconversion -Wpointer-arith -Wshadow -Wlogical-op -Waggregate-return -Wfloat-equal -g -T "fsp.ld" -Xlinker --gc-sections -L "D:\\Renesas\\workplace\\scale/script" -Wl,-Map,"scale.map" --specs=nano.specs -u _printf_float -o "scale.elf" $(OBJS) $(USER_OBJS) $(LIBS))
 	@echo Building target: $@ && arm-none-eabi-gcc @"scale.elf.in"
 scale.srec: scale.elf
 	arm-none-eabi-objcopy -O srec "scale.elf"  "scale.srec"
