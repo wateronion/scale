@@ -72,7 +72,7 @@ void app_main(void)
                 Scale_Key.is_Tare.is_pressed = 0;
             }
 
-            delay_1ms(20);
+            // delay_1ms(20);
         }
     }
 }

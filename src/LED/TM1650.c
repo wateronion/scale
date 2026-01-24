@@ -246,9 +246,9 @@ void TM1650_lambLineTest(uint8_t DIG)
 void TM1650_showNum(int num)
 {
     int ge = num % 10;
-    int sw = num > 10 ? num / 10 % 10 : 0;
-    int bw = num > 100 ? num / 100 % 10 : 0;
-    int qw = num > 1000 ? num / 1000 : 0;
+    int sw = num >= 10 ? num / 10 % 10 : 0;
+    int bw = num >= 100 ? num / 100 % 10 : 0;
+    int qw = num >= 1000 ? num / 1000 : 0;
     TM1650_print(TM1650_DIG4, ge);
     TM1650_print(TM1650_DIG3, sw);
     TM1650_print(TM1650_DIG2, bw);

@@ -235,7 +235,7 @@ void HX711_Get_CalibrationValue(void)
         //     return;
         // }
 
-        GAP_VALUE = (float)(calibration_Parameter - HX711_Weight_Init) / 200.0f;
+        GAP_VALUE = (float)(calibration_Parameter - HX711_Weight_Init) / 1000.0f;
         FLASH_Write_Float(&GAP_VALUE,CALIBRATION_VALUE_ADDR);
         // printf("GAP_VALUE = %f\r\n", GAP_VALUE);
     }
